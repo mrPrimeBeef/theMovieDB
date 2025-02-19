@@ -8,6 +8,7 @@ import app.dto.MovieDto;
 import app.util.ApiReader;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class MovieService {
@@ -19,7 +20,7 @@ public class MovieService {
         String url = "https://api.themoviedb.org/3/find/" + id + "?external_source=imdb_id" + "&api_key=" + key;
 
         String json = ApiReader.getDataFromUrl(url);
-        if (json == null){
+        if (json == null) {
             return null;
         }
 
@@ -31,7 +32,7 @@ public class MovieService {
         try {
             HelperDto helperDto = objectMapper.readValue(json, HelperDto.class);
 
-            if (helperDto.movie_results.isEmpty()){
+            if (helperDto.movie_results.isEmpty()) {
                 return null;
             }
 
@@ -89,27 +90,37 @@ public class MovieService {
         return null;
     }
 
-    public static List<MovieDto> getAdultMoviesByReleaseYear(int year) {
+    public static List<MovieDto> getAdultMoviesByReleaseYear(int year, int number) {
 
         String key = System.getenv("api_key");
-        String url = "https://api.themoviedb.org/3/discover/movie?include_adult=true&include_video=false&language=en-US&page=1&primary_release_year=" + year + "&sort_by=popularity.desc&api_key=" + key;
 
-        String json = ApiReader.getDataFromUrl(url);
+        List<MovieDto> list = new LinkedList<>();
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        objectMapper.registerModule(new JavaTimeModule());
+        for (int page = 1; list.size() < number; page++) {
 
-        try {
-            HelperDto helperDto = objectMapper.readValue(json, HelperDto.class);
+            String url = "https://api.themoviedb.org/3/discover/movie?include_adult=true&include_video=false&language=en-US&page=" + page + "&primary_release_year=" + year + "&sort_by=popularity.desc&api_key=" + key;
+            String json = ApiReader.getDataFromUrl(url);
 
-            return helperDto.results;
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            objectMapper.registerModule(new JavaTimeModule());
 
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            try {
+                HelperDto helperDto = objectMapper.readValue(json, HelperDto.class);
+
+                for (MovieDto movieDto : helperDto.results) {
+                    if (movieDto.getAdultStatus() == true && list.size() < number) {
+                        list.add(movieDto);
+                    }
+                }
+
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+
         }
 
-        return null;
+        return list;
     }
 
 

@@ -31,5 +31,9 @@ public class Main {
                 .toList();
         list.forEach(System.out::println);
 
+        System.out.println("\nGet 5 adult movies from 1978:");
+        list = MovieService.getAdultMoviesByReleaseYear(1978, 5);
+        list.forEach(System.out::println);
+
     }
 }
