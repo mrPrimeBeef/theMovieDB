@@ -19,6 +19,10 @@ public class MovieService {
         String url = "https://api.themoviedb.org/3/find/" + id + "?external_source=imdb_id" + "&api_key=" + key;
 
         String json = ApiReader.getDataFromUrl(url);
+        if (json == null){
+            return null;
+        }
+
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
