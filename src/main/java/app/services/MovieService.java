@@ -26,7 +26,7 @@ public class MovieService {
 
         try {
             HelperDto helperDto = objectMapper.readValue(json, HelperDto.class);
-            return helperDto.movie_results[0];
+            return helperDto.movie_results.get(0);
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -35,9 +35,9 @@ public class MovieService {
         return null;
     }
 
-    public static MovieDto[] getMoviesByRating(double lowerRating, double upperRating){
+    public static List<MovieDto> getMoviesByRating(double lowerRating, double upperRating) {
         String key = System.getenv("api_key");
-        String url = "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&vote_average.gte=" + lowerRating + "&vote_average.lte=" + upperRating +"&api_key=" + key;
+        String url = "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&vote_average.gte=" + lowerRating + "&vote_average.lte=" + upperRating + "&api_key=" + key;
 
         String json = ApiReader.getDataFromUrl(url);
 
@@ -48,9 +48,30 @@ public class MovieService {
         try {
             HelperDto helperDto = objectMapper.readValue(json, HelperDto.class);
 
-            MovieDto[] list = helperDto.results;
+            return helperDto.results;
 
-            return list;
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static List<MovieDto> getMoviesByReleaseYear(int year) {
+
+        String key = System.getenv("api_key");
+        String url = "https://api.themoviedb.org/3/discover/movie?include_adult=true&include_video=false&language=en-US&page=1&primary_release_year=" + year + "&sort_by=popularity.desc&api_key=" + key;
+
+        String json = ApiReader.getDataFromUrl(url);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.registerModule(new JavaTimeModule());
+
+        try {
+            HelperDto helperDto = objectMapper.readValue(json, HelperDto.class);
+
+            return helperDto.results;
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -62,26 +83,25 @@ public class MovieService {
 
     private static class HelperDto {
 
-        MovieDto[] movie_results;
-        MovieDto[] results;
+        List<MovieDto> movie_results;
+        List<MovieDto> results;
 
-        public MovieDto[] getResults() {
-            return results;
-        }
-
-        public void setResults(MovieDto[] results) {
-            this.results = results;
-        }
-
-        public MovieDto[] getMovie_results() {
+        public List<MovieDto> getMovie_results() {
             return movie_results;
         }
 
-        public void setMovie_results(MovieDto[] movie_results) {
+        public List<MovieDto> getResults() {
+            return results;
+        }
+
+        public void setMovie_results(List<MovieDto> movie_results) {
             this.movie_results = movie_results;
         }
 
-    }
+        public void setResults(List<MovieDto> results) {
+            this.results = results;
+        }
 
+    }
 
 }
