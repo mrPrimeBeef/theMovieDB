@@ -1,4 +1,4 @@
-package util;
+package app.util;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -6,7 +6,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class ApiReader {
-    public static String getDataFromURL(String url){
+    public static String getDataFromUrl(String url){
 
         String body = null;
         try {

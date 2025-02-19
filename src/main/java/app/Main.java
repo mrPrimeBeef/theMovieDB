@@ -1,13 +1,14 @@
 package app;
 
-import util.ApiReader;
+import app.dto.MovieDto;
+import app.services.MovieService;
+import app.util.ApiReader;
 
 public class Main {
     public static void main(String[] args) {
-        String key = System.getenv("api_key");
 
-        String response = ApiReader.getDataFromURL("https://api.themoviedb.org/3/search/movie?query=godzilla&include_adult=false&language=en-US&api_key=" + key);
+        MovieDto movieDto = MovieService.getMovieDto("tt0120685");
+        System.out.println(movieDto);
 
-        System.out.println(response);
     }
 }
