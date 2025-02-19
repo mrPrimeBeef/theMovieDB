@@ -17,10 +17,17 @@ public class Main {
         List<MovieDto> list = MovieService.getMoviesByRating(7.5, 8);
         list.forEach(System.out::println);
 
-        System.out.println("\nGet movies by release year:");
+        System.out.println("\nGet movies by release year and sort by rating:");
         list = MovieService.getMoviesByReleaseYear(1984)
                 .stream()
                 .sorted(Comparator.comparingDouble(MovieDto::getVoteAverage))
+                .toList();
+        list.forEach(System.out::println);
+
+        System.out.println("\nGet movies by release year and sort:");
+        list = MovieService.getMoviesByReleaseYear(2000)
+                .stream()
+                .sorted(Comparator.comparing(MovieDto::getRelease_date))
                 .toList();
         list.forEach(System.out::println);
 
