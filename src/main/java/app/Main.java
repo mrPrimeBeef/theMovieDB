@@ -9,11 +9,11 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
 
-        System.out.println("\nGet movies by id:");
+        System.out.println("Get movie by id:");
         MovieDto movieDto = MovieService.getMovieDtoById("tt0120685");
         System.out.println(movieDto);
 
-        System.out.println("\nGet movies by rating year:");
+        System.out.println("\nGet movies by rating:");
         List<MovieDto> list = MovieService.getMoviesByRating(7.5, 8);
         list.forEach(System.out::println);
 
