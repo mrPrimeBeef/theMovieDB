@@ -35,9 +35,9 @@ public class MovieService {
         return null;
     }
 
-    public static MovieDto[] getMoviesByRating(double lowerRating, double upperRating){
+    public static MovieDto[] getMoviesByRating(double lowerRating, double upperRating) {
         String key = System.getenv("api_key");
-        String url = "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&vote_average.gte=" + lowerRating + "&vote_average.lte=" + upperRating +"&api_key=" + key;
+        String url = "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&vote_average.gte=" + lowerRating + "&vote_average.lte=" + upperRating + "&api_key=" + key;
 
         String json = ApiReader.getDataFromUrl(url);
 
@@ -51,6 +51,32 @@ public class MovieService {
             MovieDto[] list = helperDto.results;
 
             return list;
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static List<MovieDto> getMoviesSortedByReleaseYear(int year) {
+
+        String key = System.getenv("api_key");
+        String url = "https://api.themoviedb.org/3/discover/movie?include_adult=true&include_video=false&language=en-US&page=1&primary_release_year=" + year + "&sort_by=popularity.desc&api_key=" + key;
+
+        String json = ApiReader.getDataFromUrl(url);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.registerModule(new JavaTimeModule());
+
+        try {
+            HelperDto helperDto = objectMapper.readValue(json, HelperDto.class);
+
+            MovieDto[] list = helperDto.results;
+
+//            return list;
+            return null;
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();

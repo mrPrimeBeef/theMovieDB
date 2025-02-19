@@ -12,8 +12,10 @@ public class Main {
 //        System.out.println(movieDto);
 
         MovieDto[] list = MovieService.getMoviesByRating(7.5,8);
-
         Arrays.stream(list).forEach(System.out::println);
+
+
+        MovieService.getMoviesSortedByReleaseYear(1984);
 
     }
 }
