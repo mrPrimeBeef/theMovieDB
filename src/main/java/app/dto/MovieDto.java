@@ -31,14 +31,6 @@ public class MovieDto {
     public MovieDto() {
     }
 
-    public MovieDto(String originalTitle, LocalDate release_date, String originalLanguage, Double voteAverage, boolean adultStatus) {
-        this.originalTitle = originalTitle;
-        this.release_date = release_date;
-        this.originalLanguage = originalLanguage;
-        this.voteAverage = voteAverage;
-        this.adultStatus = adultStatus;
-    }
-
     public String getOriginalTitle() {
         return originalTitle;
     }
@@ -51,31 +43,12 @@ public class MovieDto {
         return originalLanguage;
     }
 
-    public void setOriginalTitle(String originalTitle) {
-        this.originalTitle = originalTitle;
-    }
-
     public Double getVoteAverage() {
         return voteAverage;
-    }
-
-    public void setVoteAverage(Double voteAverage) {
-        this.voteAverage = voteAverage;
-    }
-
-    public void setRelease_date(LocalDate release_date) {
-        this.release_date = release_date;
-    }
-
-    public void setOriginalLanguage(String originalLanguage) {
-        this.originalLanguage = originalLanguage;
     }
 
     public boolean getAdultStatus() {
         return adultStatus;
     }
 
-    public void setAdultStatus(boolean adultStatus) {
-        this.adultStatus = adultStatus;
-    }
 }

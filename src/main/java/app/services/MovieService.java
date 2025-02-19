@@ -137,14 +137,6 @@ public class MovieService {
             return results;
         }
 
-        public void setMovie_results(List<MovieDto> movie_results) {
-            this.movie_results = movie_results;
-        }
-
-        public void setResults(List<MovieDto> results) {
-            this.results = results;
-        }
-
     }
 
 }
