@@ -7,7 +7,6 @@ import java.net.http.HttpResponse;
 
 public class ApiReader {
     public static String getDataFromUrl(String url){
-
         String body = null;
         try {
             // Create an HttpClient instance

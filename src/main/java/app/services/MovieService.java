@@ -26,6 +26,11 @@ public class MovieService {
 
         try {
             HelperDto helperDto = objectMapper.readValue(json, HelperDto.class);
+
+            if (helperDto.movie_results.isEmpty()){
+                return null;
+            }
+
             return helperDto.movie_results.get(0);
 
         } catch (JsonProcessingException e) {
