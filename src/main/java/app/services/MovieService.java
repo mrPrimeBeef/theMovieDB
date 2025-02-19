@@ -6,10 +6,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import app.dto.MovieDto;
 import app.util.ApiReader;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
+import java.util.List;
 
 public class MovieService {
 
-    public static MovieDto getMovieDto(String id) {
+    public static MovieDto getMovieDtoById(String id) {
 
         String key = System.getenv("api_key");
 
@@ -19,9 +22,36 @@ public class MovieService {
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.registerModule(new JavaTimeModule());
+
         try {
             HelperDto helperDto = objectMapper.readValue(json, HelperDto.class);
             return helperDto.movie_results[0];
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static MovieDto[] getMoviesByRating(double lowerRating, double upperRating){
+        String key = System.getenv("api_key");
+        String url = "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&vote_average.gte=" + lowerRating + "&vote_average.lte=" + upperRating +"&api_key=" + key;
+
+        String json = ApiReader.getDataFromUrl(url);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.registerModule(new JavaTimeModule());
+
+        try {
+            HelperDto helperDto = objectMapper.readValue(json, HelperDto.class);
+
+            MovieDto[] list = helperDto.results;
+
+            return list;
+
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -33,6 +63,15 @@ public class MovieService {
     private static class HelperDto {
 
         MovieDto[] movie_results;
+        MovieDto[] results;
+
+        public MovieDto[] getResults() {
+            return results;
+        }
+
+        public void setResults(MovieDto[] results) {
+            this.results = results;
+        }
 
         public MovieDto[] getMovie_results() {
             return movie_results;

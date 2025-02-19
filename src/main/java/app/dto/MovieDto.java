@@ -1,12 +1,15 @@
 package app.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.time.LocalDate;
 
 public class MovieDto {
     @JsonProperty("original_title")
     private String originalTitle;
-    @JsonProperty("release_date")
-    private String releaseYear;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate release_date;
     @JsonProperty("original_language")
     private String originalLanguage;
 
@@ -14,7 +17,7 @@ public class MovieDto {
     public String toString() {
         return "MovieDto{" +
                 "originalTitle='" + originalTitle + '\'' +
-                ", releaseYear=" + releaseYear +
+                ", release_date=" + release_date +
                 ", originalLanguage='" + originalLanguage + '\'' +
                 '}';
     }
@@ -22,9 +25,9 @@ public class MovieDto {
     public MovieDto() {
     }
 
-    public MovieDto(String originalTitle, String releaseYear, String originalLanguage) {
+    public MovieDto(String originalTitle, LocalDate release_date, String originalLanguage) {
         this.originalTitle = originalTitle;
-        this.releaseYear = releaseYear;
+        this.release_date = release_date;
         this.originalLanguage = originalLanguage;
     }
 
@@ -32,8 +35,8 @@ public class MovieDto {
         return originalTitle;
     }
 
-    public String getReleaseYear() {
-        return releaseYear;
+    public LocalDate getRelease_date() {
+        return release_date;
     }
 
     public String getOriginalLanguage() {
@@ -44,10 +47,9 @@ public class MovieDto {
         this.originalTitle = originalTitle;
     }
 
-    public void setReleaseYear(String releaseYear) {
-        this.releaseYear = releaseYear;
+    public void setRelease_date(LocalDate release_date) {
+        this.release_date = release_date;
     }
-
     public void setOriginalLanguage(String originalLanguage) {
         this.originalLanguage = originalLanguage;
     }
