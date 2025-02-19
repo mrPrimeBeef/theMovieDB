@@ -12,6 +12,8 @@ public class MovieDto {
     private LocalDate release_date;
     @JsonProperty("original_language")
     private String originalLanguage;
+    @JsonProperty("vote_average")
+    private Double voteAverage;
 
     @Override
     public String toString() {
@@ -19,6 +21,7 @@ public class MovieDto {
                 "originalTitle='" + originalTitle + '\'' +
                 ", release_date=" + release_date +
                 ", originalLanguage='" + originalLanguage + '\'' +
+                ", voteAverage=" + voteAverage +
                 '}';
     }
 
@@ -45,6 +48,14 @@ public class MovieDto {
 
     public void setOriginalTitle(String originalTitle) {
         this.originalTitle = originalTitle;
+    }
+
+    public Double getVoteAverage() {
+        return voteAverage;
+    }
+
+    public void setVoteAverage(Double voteAverage) {
+        this.voteAverage = voteAverage;
     }
 
     public void setRelease_date(LocalDate release_date) {
